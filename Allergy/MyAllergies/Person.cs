@@ -10,21 +10,21 @@ namespace Person
 
     public enum Allergens
     {
-        eggs = 1,
+        eggs = 0,
 
-        peanuts = 2,
+        peanuts = 1,
 
-        shellfish = 4,
+        shellfish = 2,
 
-        strawberries = 8,
+        strawberries = 3,
 
-        tomatoes = 16,
+        tomatoes = 4,
 
-        chocolate = 32,
+        chocolate = 5,
 
-        pollen = 64,
+        pollen = 6,
 
-        cats = 128,
+        cats = 7,
     };
     public class Person
     {
@@ -47,32 +47,19 @@ namespace Person
 
         }
 
-        public void GetAllergensScore(int score)
+        public bool ComputeAllergyScore(int score,int pos)
         {
-            int indice = score;
-            if (score >= 256)
+                return (score & (1<< pos)) != 0;//if true
+        }
+        public void IsAlergicTo()
+        {
+            Console.Write("Please insert your allergy score: ");
+            int score = int.Parse(Console.ReadLine());
+            for (int i = 0; i < 8; i++)
             {
-                Console.WriteLine(" {0} is alergic to: {1}", this.name, Enum.GetName(typeof(Allergens), 1));
-            }
-
-            else
-            {
-                Console.Write(this.name + " is alergic to: ");
-                while (indice >= 1)
+                if (ComputeAllergyScore(score, i))
                 {
-                    int min = 0;
-                    int wanted = 0;
-                    foreach (int num in Enum.GetValues(typeof(Allergens)))
-                    {
-                        if (num > min && num <= indice)
-                        {
-                            wanted = num;
-                            min = num;
-                        }
-                    }
-                    Console.Write(Enum.GetName(typeof(Allergens), wanted) + " ");
-                    indice -= wanted;
-
+                    Console.WriteLine($"{this.name} is alergic to: {Enum.GetName(typeof(Allergens), i)}");
                 }
             }
         }
